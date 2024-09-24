@@ -1,4 +1,4 @@
-Trabalho 2 BCC - T1 - Data de entrega: 01/10/2024
+Trabalho 2 BCC - T1 - Data de entrega: [ 01/10/2024 ]
 Escreva um programa para criar as seguintes estruturas que simularão arquivos indexados para uma aplicação de gerenciamento para uma Agência de Turismo:
 
 
@@ -11,25 +11,6 @@ Escreva um programa para criar as seguintes estruturas que simularão arquivos i
 
 
 ================== A FAZER ==================
-
-
-> Estruturas: 
-    Países: código_país, nome
-    Cidades: código_cidade, nome, UF, código_país
-    Guias: código_guia, nome, endereço, telefone, código_cidade
-    Clientes: código_cliente, nome, endereço, código_cidade
-    Pacotes: código_pacote, descrição, código_guia, valor_por_pessoa, total_participantes, quant_max_participantes
-    Criar dois índices: código_pacote e código_guia
-    Vendas: código_venda, código_cliente, código_pacote, quantidade_pessoas, valor_total
-    Criar dois índices: código_venda e código_cliente
-
-
-1) Escreva funções específicas para a leitura dos dados das estruturas: Países, Cidades.
-
-
-2) Escreva uma função para permitir a inclusão de novos registros na tabela de Guias:
-    2.1): O programa deverá garantir que o código do guia a ser inserido não existe na tabela de Guias.
-    2.2): Quando o usuário digitar o código da cidade, o programa deverá buscar este código na tabela de Cidades e exibir o nome da cidade e UF e o nome do País.
 
 
 3) Escreva uma função para permitir a inclusão de novos registros na tabela de Clientes:
@@ -78,3 +59,19 @@ Obs: não utilizar variáveis globais.
 
 
 ================== FEITO ==================
+
+Estruturas: 
+    Países: código_país, nome
+    Cidades: código_cidade, nome, UF, código_país
+    Guias: código_guia, nome, endereço, telefone, código_cidade
+    Clientes: código_cliente, nome, endereço, código_cidade
+    Pacotes: código_pacote, descrição, código_guia, valor_por_pessoa, total_participantes, quant_max_participantes
+    Criar dois índices: código_pacote e código_guia
+    Vendas: código_venda, código_cliente, código_pacote, quantidade_pessoas, valor_total
+    Criar dois índices: código_venda e código_cliente
+
+1) Escreva funções específicas para a leitura dos dados das estruturas: Países, Cidades.
+
+2) Escreva uma função para permitir a inclusão de novos registros na tabela de Guias:
+    2.1): O programa deverá garantir que o código do guia a ser inserido não existe na tabela de Guias.
+    2.2): Quando o usuário digitar o código da cidade, o programa deverá buscar este código na tabela de Cidades e exibir o nome da cidade e UF e o nome do País.
