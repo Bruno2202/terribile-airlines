@@ -13,14 +13,6 @@ Escreva um programa para criar as seguintes estruturas que simularão arquivos i
 ================== A FAZER ==================
 
 
-4) Escreva uma função para permitir a exclusão de registros na tabela de Clientes: 🔄️
-    4.1): O programa não deverá permitir a exclusão de clientes que possuam vendas cadastradas em seu nome. ⚠️
-
-
-5) Escreva uma função para permitir a exclusão de registros na tabela de Guias:
-    5.1): O programa não deverá permitir a exclusão de guias que possuam pacotes cadastrados em seu nome.
-
-
 6) Escreva uma função para permitir a inclusão de novos registros na tabela de Pacotes:
     6.1): Quando o usuário digitar o código do guia, o programa deverá buscar este código na tabela de Guias e exibir o nome do guia, o nome da cidade e o nome do país.
 
@@ -74,3 +66,9 @@ Estruturas:
 3) Escreva uma função para permitir a inclusão de novos registros na tabela de Clientes:
     3.1): O programa deverá garantir que o código do cliente a ser inserido não existe na tabela de clientes.
     3.2): Quando o usuário digitar o código da cidade, o programa deverá buscar este código na tabela de Cidades e exibir o nome da cidade e UF e o nome do País.
+
+4) Escreva uma função para permitir a exclusão de registros na tabela de Clientes:
+    4.1): O programa não deverá permitir a exclusão de clientes que possuam vendas cadastradas em seu nome.
+
+5) Escreva uma função para permitir a exclusão de registros na tabela de Guias:
+    5.1): O programa não deverá permitir a exclusão de guias que possuam pacotes cadastrados em seu nome.
