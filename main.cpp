@@ -392,13 +392,17 @@ void incluirGuia (
             if (!buscarGuia(idx, x, cont, cod, 1, dbCidade, numCidade, dbPais, numPais)) {
                 x[cont].cod_guia = cod;
                 cout << "Nome: ";
-                cin >> x[cont].nome;
+                cin.ignore();
+                getline(cin, x[cont].nome);
 
                 cout << "Endereco: ";
-                cin >> x[cont].endereco;
+                cin.ignore();
+                getline(cin, x[cont].endereco);
+
 
                 cout << "Telefone: ";
-                cin >> x[cont].telefone;
+                cin.ignore();
+                getline(cin, x[cont].telefone);
                 
                 while (!cod_cidade_valid) {
                     cout << "Codigo da Cidade: ";
@@ -437,63 +441,6 @@ void incluirGuia (
     return;
 }
 
-bool buscarGuia (
-    struct Index idx[], 
-    struct Guia x[], 
-    int &cont, 
-    int cod,
-    int tipo,
-    struct Cidade dbCidade[],
-    int &numCidade,
-    struct Pais dbPais[],
-    int numPais
-) {
-    int i = 0, f = cont;
-    int m = (i + f) / 2;
-
-    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2) {
-        if (cod > idx[m].cod)
-            i = m + 1;
-        else
-            f = m - 1;
-    }
-
-    if (cod == idx[m].cod) {
-        switch (tipo) {
-            case 1: 
-                i = idx[m].idx;
-                cout << endl << "Codigo do Guia: " << x[i].cod_guia
-                    << endl << "Nome: " << x[i].nome
-                    << endl << "Endereco: " << x[i].endereco
-                    << endl << "Telefone: " << x[i].telefone
-                    << endl << "Codigo da Cidade: " << x[i].cod_cidade
-                    << endl << endl;
-                return true;
-                    
-            case 2:
-                i = idx[m].idx;
-                cout << endl << "Nome: " << x[i].nome << endl;
-                buscarCidade(dbCidade, numCidade, x[i].cod_cidade);
-                buscarPais(dbPais, numPais, x[i].cod_cidade);
-                return true;
-            
-            default:
-                i = idx[m].idx;
-                cout << endl << "Codigo do Guia: " << x[i].cod_guia
-                    << endl << "Nome: " << x[i].nome
-                    << endl << "Endereco: " << x[i].endereco
-                    << endl << "Telefone: " << x[i].telefone
-                    << endl << "Codigo da Cidade: " << x[i].cod_cidade
-                    << endl << endl;
-                return true;
-        }
-    } else {
-        return false;
-    }
-
-    getch();
-}
-
 void incluirCliente (
     struct Index idx[], 
     struct Cliente x[], 
@@ -518,10 +465,12 @@ void incluirCliente (
                 x[cont].cod_cliente = cod;
 
                 cout << "Nome: ";
-                cin >> x[cont].nome;
+                cin.ignore();
+                getline(cin, x[cont].nome);
 
                 cout << "Endereco: ";
-                cin >> x[cont].endereco;
+                cin.ignore();
+                getline(cin, x[cont].endereco);
 
                 while (!cod_cidade_valid) {
                     cout << "Codigo da Cidade: ";
@@ -552,241 +501,13 @@ void incluirCliente (
                 idx[i+1].idx = cont;
                 
                 system("cls");
+            } else {
+                cout << "\033[31m" << "ESTE CODIGO JA ESTA EM USO!" << "\033[0m" << endl << endl;
             }
         }
     }
 
     return;
-}
-
-void excluirCliente(    
-    struct Index idx[], 
-    struct Cliente x[], 
-    int &cont,
-    struct Venda dbVenda[],
-    int &numVenda
-) {
-    system("cls");
-
-    int cod_cliente, i=0, f=cont - 1, m;
-    char conf = ' ';
-
-    cout << endl << "Informe o CODIGO do CLIENTE a ser EXCLUIDO (0 para Encerrar): ";
-    cin >> cod_cliente;
-
-    if (cod_cliente == 0) {
-        return;
-    }
-
-    while (f >= i) {
-        m = (i + f) / 2;
-
-        if (cod_cliente == idx[m].cod) {
-            i = idx[m].idx;
-            break;
-        } else if (cod_cliente > idx[m].cod) {
-            i = m + 1;
-        } else {
-            f = m - 1;
-        }
-    }
-
-    if (cod_cliente != idx[m].cod) {
-        cout << "\033[31m" << "CLIENTE NAO CADASTRADO" << "\033[0m" << endl;
-        getch();
-        return;
-    }
-
-    if (!buscarVenda(dbVenda, numVenda, cod_cliente)) {
-        if (x[i].status == 0) {
-            buscarCliente(idx, x, cont, cod_cliente);
-            cout << "Deseja EXCLUIR esse CLIENTE? (S/N): ";
-            cin >> conf;
-            conf = toupper(conf);
-        
-            if (conf == 'S') {
-                x[i].status = 1;
-                cout << "Cliente excluido com sucesso!" << endl;
-                getch();
-                return;
-            }
-        } else {
-            cout << "\033[31m" << "CLIENTE JA EXCLUIDO" << "\033[0m" << endl;
-            getch();
-        }
-    } else {
-        buscarCliente(idx, x, cont, cod_cliente);
-        cout << "\033[31m" << "CLIENTE NAO PODE SER EXCLUIDO, TEM VENDAS ASSOCIADAS" << "\033[0m" << endl;
-        getch();
-    }
-}
-
-void reorganizarCliente (
-    struct Index idx[], 
-    struct Cliente x[], 
-    int &cont
-) {
-    struct Cliente novoDbX[40];
-	int j=-1;
-    for (int k=0; k < cont; k++){
-        int i = idx[k].idx;
-        if (x[i].status == 0){
-            j++;
-            novoDbX[j] = x[i];
-            idx[j].cod = novoDbX[j].cod_cliente;
-            idx[j].idx = j;
-        }
-    }
-    cont = j+1;
-    for (int k = 0; k < cont; k++){
-    	int i = idx[k].idx;
-    	x[k] = novoDbX [i];
-	}
-}
-
-bool buscarVenda(struct Venda x[], int &cont, int cod_cli) {
-    int i = 0;
-    int f = cont - 1;
-    
-    while (i <= f) {
-        int m = (i + f) / 2;
-        
-        if (x[m].cod_cli == cod_cli) {
-            return true;
-        }
-        if (x[m].cod_cli < cod_cli) {
-            i = m + 1;
-        } else {
-            f = m - 1;
-        }
-    }
-
-    return false;
-}
-
-bool buscarCliente (
-    struct Index idx[], 
-    struct Cliente x[], 
-    int &cont, 
-    int cod
-) {
-    int i = 0, f = cont;
-    int m = (i + f) / 2;
-
-    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2) {
-        if (cod > idx[m].cod)
-            i = m + 1;
-        else
-            f = m - 1;
-    }
-
-    if (cod == idx[m].cod) {
-        i = idx[m].idx;
-        cout << endl << "Codigo do Cliente: " << x[i].cod_cliente
-            << endl << "Nome: " << x[i].nome
-            << endl << "Endereco: " << x[i].endereco
-            << endl << "Codigo da Cidade: " << x[i].cod_cidade
-            << endl << endl;
-
-        return false;
-    } else {
-        return true;
-    }
-
-    getch();
-}
-
-void excluirGuia(    
-    struct Index idx[], 
-    struct Guia x[], 
-    int &cont,
-    struct Index dbPacoteIndex[],
-    struct Pacote dbPacote[],
-    int &numPacote,
-    struct Cidade dbCidade[],
-    int &numCidade,
-    struct Pais dbPais[],
-    int &numPais,
-    struct Index dbGuiaIndex[],
-    struct Guia dbGuia[],
-    int &numGuia
-) {
-    system("cls");
-
-    int cod_guia, i=0, f=cont - 1, m;
-    char conf = ' ';
-
-    cout << endl << "Informe o CODIGO do GUIA a ser EXCLUIDO (0 para Encerrar): ";
-    cin >> cod_guia;
-
-    if (cod_guia == 0) {
-        return;
-    }
-
-    while (f >= i) {
-        m = (i + f) / 2;
-
-        if (cod_guia == idx[m].cod) {
-            i = idx[m].idx;
-            break;
-        } else if (cod_guia > idx[m].cod) {
-            i = m + 1;
-        } else {
-            f = m - 1;
-        }
-    }
-
-    if (cod_guia != idx[m].cod) {
-        cout << "\033[31m" << "GUIA NAO CADASTRADO" << "\033[0m" << endl;
-        getch();
-        return;
-    }
-    
-    if (!buscarPacoteGuia(dbPacote, numPacote, cod_guia)) {
-        if (x[i].status == 0) {
-            buscarGuia(idx, x, cont, cod_guia, 1, dbCidade, numCidade, dbPais, numPais);
-            cout << "Deseja EXCLUIR esse GUIA? (S/N): ";
-            cin >> conf;
-            conf = toupper(conf);
-            
-            if (conf == 'S') {
-                x[i].status = 1;
-                cout << "Guia excluido com sucesso!" << endl;
-                getch();
-                return;
-            }
-        } else {
-            cout << "\033[31m" << "CLIENTE JA EXCLUIDO" << "\033[0m" << endl;
-            getch();
-        }
-    } else {
-        buscarGuia(idx, x, cont, cod_guia, 1, dbCidade, numCidade, dbPais, numPais);
-        cout << "\033[31m" << "GUIA NAO PODE SER EXCLUIDO, TEM PACOTES ASSOCIADOS" << "\033[0m" << endl;
-        getch();
-    }
-}
-
-void reorganizarGuia (
-    struct Index idx[], 
-    struct Guia x[], 
-    int &cont
-) {
-    struct Guia novoDbX[40];
-	int j=-1;
-    for (int k=0; k < cont; k++){
-        int i = idx[k].idx;
-        if (x[i].status == 0){
-            j++;
-            novoDbX[j] = x[i];
-            idx[j].cod = novoDbX[j].cod_guia;
-            idx[j].idx = j;
-        }
-    }
-    cont = j+1;
-    for (int k = 0; k < cont; k++){
-    	int i = idx[k].idx;
-    	x[k] = novoDbX [i];
-	}
 }
 
 void incluirPacote (
@@ -856,6 +577,187 @@ void incluirPacote (
     return;
 }
 
+
+void excluirCliente(    
+    struct Index idx[], 
+    struct Cliente x[], 
+    int &cont,
+    struct Venda dbVenda[],
+    int &numVenda
+) {
+    system("cls");
+
+    int cod_cliente, i=0, f=cont - 1, m;
+    char conf = ' ';
+
+    cout << endl << "Informe o CODIGO do CLIENTE a ser EXCLUIDO (0 para Encerrar): ";
+    cin >> cod_cliente;
+
+    if (cod_cliente == 0) {
+        return;
+    }
+
+    while (f >= i) {
+        m = (i + f) / 2;
+
+        if (cod_cliente == idx[m].cod) {
+            i = idx[m].idx;
+            break;
+        } else if (cod_cliente > idx[m].cod) {
+            i = m + 1;
+        } else {
+            f = m - 1;
+        }
+    }
+
+    if (cod_cliente != idx[m].cod) {
+        cout << "\033[31m" << "CLIENTE NAO CADASTRADO" << "\033[0m" << endl;
+        getch();
+        return;
+    }
+
+    if (!buscarVenda(dbVenda, numVenda, cod_cliente)) {
+        if (x[i].status == 0) {
+            buscarCliente(idx, x, cont, cod_cliente);
+            cout << "Deseja EXCLUIR esse CLIENTE? (S/N): ";
+            cin >> conf;
+            conf = toupper(conf);
+        
+            if (conf == 'S') {
+                x[i].status = 1;
+                cout << endl << "\033[32m" << "Cliente excluido com sucesso!" << "\033[0m" << endl;
+                getch();
+                return;
+            }
+        } else {
+            cout << "\033[31m" << "CLIENTE JA EXCLUIDO" << "\033[0m" << endl;
+            getch();
+        }
+    } else {
+        buscarCliente(idx, x, cont, cod_cliente);
+        cout << "\033[31m" << "CLIENTE NAO PODE SER EXCLUIDO, TEM VENDAS ASSOCIADAS" << "\033[0m" << endl;
+        getch();
+    }
+}
+
+void excluirGuia(    
+    struct Index idx[], 
+    struct Guia x[], 
+    int &cont,
+    struct Index dbPacoteIndex[],
+    struct Pacote dbPacote[],
+    int &numPacote,
+    struct Cidade dbCidade[],
+    int &numCidade,
+    struct Pais dbPais[],
+    int &numPais,
+    struct Index dbGuiaIndex[],
+    struct Guia dbGuia[],
+    int &numGuia
+) {
+    system("cls");
+
+    int cod_guia, i=0, f=cont - 1, m;
+    char conf = ' ';
+
+    cout << endl << "Informe o CODIGO do GUIA a ser EXCLUIDO (0 para Encerrar): ";
+    cin >> cod_guia;
+
+    if (cod_guia == 0) {
+        return;
+    }
+
+    while (f >= i) {
+        m = (i + f) / 2;
+
+        if (cod_guia == idx[m].cod) {
+            i = idx[m].idx;
+            break;
+        } else if (cod_guia > idx[m].cod) {
+            i = m + 1;
+        } else {
+            f = m - 1;
+        }
+    }
+
+    if (cod_guia != idx[m].cod) {
+        cout << "\033[31m" << "GUIA NAO CADASTRADO" << "\033[0m" << endl;
+        getch();
+        return;
+    }
+
+    if (!buscarPacoteGuia(dbPacote, numPacote, cod_guia)) {
+        if (x[i].status == 0) {
+            buscarGuia(idx, x, cont, cod_guia, 1, dbCidade, numCidade, dbPais, numPais);
+            cout << "Deseja EXCLUIR esse GUIA? (S/N): ";
+            cin >> conf;
+            conf = toupper(conf);
+            
+            if (conf == 'S') {
+                x[i].status = 1;
+                cout << endl << "\033[32m" << "Guia excluido com sucesso!" << "\033[0m" << endl;
+                getch();
+                return;
+            }
+        } else {
+            cout << "\033[31m" << "CLIENTE JA EXCLUIDO" << "\033[0m" << endl;
+            getch();
+        }
+    } else {
+        buscarGuia(idx, x, cont, cod_guia, 1, dbCidade, numCidade, dbPais, numPais);
+        cout << "\033[31m" << "GUIA NAO PODE SER EXCLUIDO, TEM PACOTES ASSOCIADOS" << "\033[0m" << endl;
+        getch();
+    }
+}
+
+
+void reorganizarGuia (
+    struct Index idx[], 
+    struct Guia x[], 
+    int &cont
+) {
+    struct Guia novoDbX[40];
+	int j=-1;
+    for (int k=0; k < cont; k++){
+        int i = idx[k].idx;
+        if (x[i].status == 0){
+            j++;
+            novoDbX[j] = x[i];
+            idx[j].cod = novoDbX[j].cod_guia;
+            idx[j].idx = j;
+        }
+    }
+    cont = j+1;
+    for (int k = 0; k < cont; k++){
+    	int i = idx[k].idx;
+    	x[k] = novoDbX [i];
+	}
+}
+
+void reorganizarCliente (
+    struct Index idx[], 
+    struct Cliente x[], 
+    int &cont
+) {
+    struct Cliente novoDbX[40];
+	int j=-1;
+    for (int k=0; k < cont; k++){
+        int i = idx[k].idx;
+        if (x[i].status == 0){
+            j++;
+            novoDbX[j] = x[i];
+            idx[j].cod = novoDbX[j].cod_cliente;
+            idx[j].idx = j;
+        }
+    }
+    cont = j+1;
+    for (int k = 0; k < cont; k++){
+    	int i = idx[k].idx;
+    	x[k] = novoDbX [i];
+	}
+}
+
+
 bool buscarPacoteGuia (
     struct Pacote x[], 
     int &cont, 
@@ -902,7 +804,6 @@ bool buscarPacote (
         if (cod == idx[m].cod) {
             i = idx[m].idx;
 
-            cout << endl << "Codigo do Pacote: " << x[i].cod_pacote << endl;
             buscarGuia(dbGuiaIndex, dbGuia, numGuia, x[i].cod_guia, 2, dbCidade, numCidade, dbPais, numPais);
             cout << "Valor por pessoa: " << x[i].vlr_pessoa
                 << endl << "Descricao: " << x[i].descricao
@@ -969,4 +870,112 @@ bool buscarPais (struct Pais x[], int &cont, int cod) {
 
     cout << "\033[31m" << "PAIS NAO ENCONTRADO!" << "\033[0m" << endl;
     return false;
+}
+
+bool buscarVenda(struct Venda x[], int &cont, int cod_cli) {
+    int i = 0;
+    int f = cont - 1;
+    
+    while (i <= f) {
+        int m = (i + f) / 2;
+        
+        if (x[m].cod_cli == cod_cli) {
+            return true;
+        }
+        if (x[m].cod_cli < cod_cli) {
+            i = m + 1;
+        } else {
+            f = m - 1;
+        }
+    }
+
+    return false;
+}
+bool buscarCliente (
+    struct Index idx[], 
+    struct Cliente x[], 
+    int &cont, 
+    int cod
+) {
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2) {
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+
+    if (cod == idx[m].cod) {
+        i = idx[m].idx;
+        cout << endl << "Codigo do Cliente: " << x[i].cod_cliente
+            << endl << "Nome: " << x[i].nome
+            << endl << "Endereco: " << x[i].endereco
+            << endl << "Codigo da Cidade: " << x[i].cod_cidade
+            << endl << endl;
+
+        return false;
+    } else {
+        return true;
+    }
+
+    getch();
+}
+
+bool buscarGuia (
+    struct Index idx[], 
+    struct Guia x[], 
+    int &cont, 
+    int cod,
+    int tipo,
+    struct Cidade dbCidade[],
+    int &numCidade,
+    struct Pais dbPais[],
+    int numPais
+) {
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2) {
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+
+    if (cod == idx[m].cod) {
+        switch (tipo) {
+            case 1: 
+                i = idx[m].idx;
+                cout << endl << "Codigo do Guia: " << x[i].cod_guia
+                    << endl << "Nome: " << x[i].nome
+                    << endl << "Endereco: " << x[i].endereco
+                    << endl << "Telefone: " << x[i].telefone
+                    << endl << "Codigo da Cidade: " << x[i].cod_cidade
+                    << endl << endl;
+                return true;
+                    
+            case 2:
+                i = idx[m].idx;
+                cout << "\033[32m" << "Nome: " << x[i].nome << "\033[0m" << endl;
+                buscarCidade(dbCidade, numCidade, x[i].cod_cidade);
+                buscarPais(dbPais, numPais, x[i].cod_cidade);
+                return true;
+            
+            default:
+                i = idx[m].idx;
+                cout << endl << "Codigo do Guia: " << x[i].cod_guia
+                    << endl << "Nome: " << x[i].nome
+                    << endl << "Endereco: " << x[i].endereco
+                    << endl << "Telefone: " << x[i].telefone
+                    << endl << "Codigo da Cidade: " << x[i].cod_cidade
+                    << endl << endl;
+                return true;
+        }
+    } else {
+        return false;
+    }
+
+    getch();
 }
