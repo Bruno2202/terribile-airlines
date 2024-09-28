@@ -15,12 +15,12 @@ Escreva um programa para criar as seguintes estruturas que simularão arquivos i
 ⚠️📍 Verificar se o arquivo de INDEX está correto, condizente com o array de dados
 📍 Realizar a reorganização do array de INDEX
 
-7) Escreva uma função para permitir a inclusão de novos registros na tabela de Vendas:
-    7.1): Quando o usuário digitar o código_cliente, o programa deverá buscar este código na tabela de Clientes e exibir seu nome e o nome da sua cidade.
-    7.2): Quando o usuário digitar o código_pacote, o programa deverá buscar este código na tabela de Pacotes e exibir a descrição, o nome do guia e o valor por pessoa.
-    7.3): Quando o usuário digitar quantidade_pessoas, o programa deverá adicionar esta informação ao total_participantes da tabela de Pacotes.
-        7.3.1): O programa não deverá permitir que o total_participantes seja maior do que quant_max_participantes.
-    7.4): O programa deverá calcular e exibir o valor total a ser pago pelo cliente e gravar essa informação em valor_total na tabela Vendas.
+7) Escreva uma função para permitir a inclusão de novos registros na tabela de Vendas: 🔄️
+    7.1): Quando o usuário digitar o código_cliente, o programa deverá buscar este código na tabela de Clientes e exibir seu nome e o nome da sua cidade. ✅
+    7.2): Quando o usuário digitar o código_pacote, o programa deverá buscar este código na tabela de Pacotes e exibir a descrição, o nome do guia e o valor por pessoa. ✅
+    7.3): Quando o usuário digitar quantidade_pessoas, o programa deverá adicionar esta informação ao total_participantes da tabela de Pacotes. ✅
+        7.3.1): O programa não deverá permitir que o total_participantes seja maior do que quant_max_participantes. ✅
+    7.4): O programa deverá calcular e exibir o valor total a ser pago pelo cliente e gravar essa informação em valor_total na tabela Vendas. ✅
 
 
 8) Escreva uma função para permitir ao usuário consultar os dados de determinado pacote:
@@ -42,7 +42,7 @@ Obs: não utilizar variáveis globais.
 
 ================== FEITO ==================
 
-Estruturas: 
+Estruturas: ✅
     Países: código_país, nome
     Cidades: código_cidade, nome, UF, código_país
     Guias: código_guia, nome, endereço, telefone, código_cidade

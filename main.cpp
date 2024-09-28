@@ -115,6 +115,30 @@ bool buscarPacoteGuia (
     int &cont, 
     int cod_guia
 );
+void incluirVenda (
+    struct Index idx[], 
+    struct Venda x[], 
+    int &cont,
+    struct Index dbClienteIndex[], 
+    struct Cliente dbCliente[],
+    int &numCliente, 
+    struct Pais dbPais[], 
+    int &numPais,
+    struct Cidade dbCidade[], 
+    int &numCidade,
+    struct Index dbPacoteIndex[],
+    struct Pacote dbPacote[],
+    int &numPacote,
+    struct Index dbGuiaIndex[],
+    struct Guia dbGuia[],
+    int &numGuia
+);
+bool buscarCodVenda(
+    struct Index idx[], 
+    struct Venda x[], 
+    int &cont, 
+    int cod
+);
 
 
 struct Pais {
@@ -143,6 +167,7 @@ struct Pacote {
     int cod_pacote, cod_guia;
     double vlr_pessoa;
     string descricao; 
+    int qtde_max_participantes, qtde_total_participantes;
 };
 
 struct Venda {
@@ -230,6 +255,7 @@ int main() {
         cout << "(5) - Excluir Cliente" << endl << endl;
         cout << "(6) - Excluir Guia" << endl << endl;
         cout << "(7) - Incluir Pacote" << endl << endl;
+        cout << "(8) - Incluir Venda" << endl << endl;
 
         cout << "(0) - Sair" << endl << endl;
 
@@ -263,6 +289,10 @@ int main() {
 
             case 7:
                 incluirPacote(dbPacoteIndex, dbPacote, numPacote, dbGuiaIndex, dbGuia, numGuia, dbPais, numPais, dbCidade, numCidade);
+                break;
+
+            case 8:
+                incluirVenda(dbVendaIndex, dbVenda, numVenda, dbClienteIndex, dbCliente, numCliente, dbPais, numPais, dbCidade, numCidade, dbPacoteIndex, dbPacote, numPacote, dbGuiaIndex, dbGuia, numGuia);
                 break;
 
             default:
@@ -461,7 +491,7 @@ void incluirCliente (
         cin >> cod;
         
         if (cod != 0) {
-            if (buscarCliente(idx, x, cont, cod)) {
+            if (!buscarCliente(idx, x, cont, cod)) {
                 x[cont].cod_cliente = cod;
 
                 cout << "Nome: ";
@@ -568,6 +598,121 @@ void incluirPacote (
                 cont++;
 
                 system("cls");
+            } else {
+                cout << "\033[31m" << "ESTE CODIGO JA ESTA EM USO!" << "\033[0m" << endl << endl;
+            }
+        }
+    }
+
+    return;
+}
+
+void incluirVenda (
+    struct Index idx[], 
+    struct Venda x[], 
+    int &cont,
+    struct Index dbClienteIndex[], 
+    struct Cliente dbCliente[],
+    int &numCliente, 
+    struct Pais dbPais[], 
+    int &numPais,
+    struct Cidade dbCidade[], 
+    int &numCidade,
+    struct Index dbPacoteIndex[],
+    struct Pacote dbPacote[],
+    int &numPacote,
+    struct Index dbGuiaIndex[],
+    struct Guia dbGuia[],
+    int &numGuia
+) {
+    system("cls");
+    
+    cont++;
+    int cod_cliente, cod_pacote, qtde_pessoas;
+    double vlr_venda;
+    bool cod_cliente_valido=false, cod_pacote_valido=false, qtde_pessoas_valido=false;
+
+    for (int cod = 1; cod != 0;){
+        cod_cliente_valido=false, cod_pacote_valido=false, qtde_pessoas_valido=false;
+
+        cout << "Informe o CODIGO da VENDA a ser INCLUIDA (0 para Encerrar): ";
+        cin >> cod;
+        
+        if (cod != 0) {
+            if (!buscarCodVenda(idx, x, cont, cod)) {
+                x[cont].cod_venda = cod;
+
+                while (!cod_cliente_valido) {
+                    cout << "CODIGO do CLIENTE: ";
+                    cin >> cod_cliente;
+
+                    if (buscarCliente(dbClienteIndex, dbCliente, numCliente, cod_cliente)) {
+                        cod_cliente_valido = true;
+                        x[cont].cod_cli = cod_cliente;
+
+                        cout << "CODIGO do PACOTE: ";
+                        cin >> cod_pacote;
+
+                        while (!cod_pacote_valido) {
+                            if (buscarPacote(dbPacoteIndex, dbPacote, numPacote, cod_pacote, dbGuiaIndex, dbGuia, numGuia, dbCidade, numCidade, dbPais, numPais)) {
+                                cod_pacote_valido = true;
+                                x[cont].cod_pacote = cod_pacote;
+
+                                while (!qtde_pessoas_valido) { 
+                                    cout << "QUANTIDADE de PESSOAS: ";
+                                    cin >> qtde_pessoas;
+
+                                    if (qtde_pessoas != 0 || qtde_pessoas > 0) {
+                                        qtde_pessoas_valido = true;
+                                        int i=0, f=cont-1;
+                                        int m;
+
+                                        while (i <= f) {
+                                            m = (i + f) / 2;
+
+                                            if (cod == idx[m].cod) {
+                                                i = idx[m].idx;
+
+                                                if (qtde_pessoas + dbPacote[i].qtde_total_participantes > dbPacote[i].qtde_max_participantes) {
+                                                    cout << "\033[31m" << "A QUANTIDADE DE PESSOAS NA VENDA ULTRAPASSA A QUANTIDADE MAXIMA DE PARTICIPANTES DESTE PACOTE!" << "\033[0m" << endl << endl;
+                                                } else {
+                                                    dbPacote[i].qtde_total_participantes = qtde_pessoas + dbPacote[i].qtde_total_participantes;
+                                                    x[cont].qtde_pessoas = qtde_pessoas;
+
+                                                    vlr_venda = qtde_pessoas * dbPacote[i].vlr_pessoa;
+                                                    cout << "VALOR da VENDA: " << vlr_venda;
+                                                    x[cont].vlr_total = vlr_venda;
+
+                                                    int j;
+                                                    for (j = cont - 1; idx[j].cod > cod; j--) {
+                                                        idx[j+1].cod = idx[j].cod;
+                                                        idx[j+1].idx = idx[j].idx;
+                                                    }
+                                                    idx[j+1].cod = cod;
+                                                    idx[j+1].idx = cont;
+
+                                                    getch();
+                                                    system("cls");
+                                                }
+                                            } 
+                                            else if (cod > idx[m].cod) {
+                                                i = m + 1;
+                                            } else {
+                                                f = m - 1;
+                                            }
+                                        }
+                                    } else {
+                                        cout << "\033[31m" << "QUANTIDADE INVALIDA DE PESSOAS!" << "\033[0m" << endl << endl;
+                                    }
+                                }
+                            } else {
+                                cout << "\033[31m" << "PACOTE NAO ENCONTRADO!" << "\033[0m" << endl << endl;
+                            }
+                        }
+                    } else {
+                        cout << "\033[31m" << "CLIENTE NAO ENCONTRADO!" << "\033[0m" << endl << endl;
+                    }   
+                }
             } else {
                 cout << "\033[31m" << "ESTE CODIGO JA ESTA EM USO!" << "\033[0m" << endl << endl;
             }
@@ -807,6 +952,8 @@ bool buscarPacote (
             buscarGuia(dbGuiaIndex, dbGuia, numGuia, x[i].cod_guia, 2, dbCidade, numCidade, dbPais, numPais);
             cout << "Valor por pessoa: " << x[i].vlr_pessoa
                 << endl << "Descricao: " << x[i].descricao
+                << endl << "Quantidade de Participantes: " << x[i].qtde_max_participantes
+                << endl << "Quantidade Max. de Participantes: " << x[i].qtde_max_participantes
                 << endl << endl;
 
             return true;
@@ -872,6 +1019,39 @@ bool buscarPais (struct Pais x[], int &cont, int cod) {
     return false;
 }
 
+bool buscarCodVenda(
+    struct Index idx[], 
+    struct Venda x[], 
+    int &cont, 
+    int cod
+) {
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2) {
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+
+    if (cod == idx[m].cod) {
+        i = idx[m].idx;
+        cout << endl << "Codigo da Venda: " << x[i].cod_venda
+            << endl << "Codigo do Cliente " << x[i].cod_cli
+            << endl << "Codigo do Pacote: " << x[i].cod_pacote 
+            << endl << "Quantidade de Pessoas: " << x[i].qtde_pessoas
+            << endl << "valor Total: " << x[i].vlr_total
+            << endl << endl;
+
+        return true;
+    } else {
+        return false;
+    }
+
+    getch();
+}
+
 bool buscarVenda(struct Venda x[], int &cont, int cod_cli) {
     int i = 0;
     int f = cont - 1;
@@ -891,6 +1071,7 @@ bool buscarVenda(struct Venda x[], int &cont, int cod_cli) {
 
     return false;
 }
+
 bool buscarCliente (
     struct Index idx[], 
     struct Cliente x[], 
@@ -915,9 +1096,9 @@ bool buscarCliente (
             << endl << "Codigo da Cidade: " << x[i].cod_cidade
             << endl << endl;
 
-        return false;
-    } else {
         return true;
+    } else {
+        return false;
     }
 
     getch();
