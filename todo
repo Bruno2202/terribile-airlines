@@ -12,28 +12,8 @@ Escreva um programa para criar as seguintes estruturas que simularão arquivos i
 
 ================== A FAZER ==================
 
-⚠️📍 Verificar se o arquivo de INDEX está correto, condizente com o array de dados
+📍 Verificar se o arquivo de INDEX está correto, condizente com o array de dados ⚠️
 📍 Realizar a reorganização do array de INDEX
-
-7) Escreva uma função para permitir a inclusão de novos registros na tabela de Vendas: 🔄️
-    7.1): Quando o usuário digitar o código_cliente, o programa deverá buscar este código na tabela de Clientes e exibir seu nome e o nome da sua cidade. ✅
-    7.2): Quando o usuário digitar o código_pacote, o programa deverá buscar este código na tabela de Pacotes e exibir a descrição, o nome do guia e o valor por pessoa. ✅
-    7.3): Quando o usuário digitar quantidade_pessoas, o programa deverá adicionar esta informação ao total_participantes da tabela de Pacotes. ✅
-        7.3.1): O programa não deverá permitir que o total_participantes seja maior do que quant_max_participantes. ✅
-    7.4): O programa deverá calcular e exibir o valor total a ser pago pelo cliente e gravar essa informação em valor_total na tabela Vendas. ✅
-
-
-8) Escreva uma função para permitir ao usuário consultar os dados de determinado pacote:
-    8.1) Para cada pacote consultado, exibir: todos os seus dados e o valor total arrecadado pelo pacote (valor_por_pessoa * total_participantes).
-
-
-9) Escreva uma função para exibir todos os registros da tabela Pacotes que tenham sido completamente vendidos (total_participantes = quant_max_participantes):
-    9.1) As seguintes informações devem ser exibidas: código, descrição, nome do guia, valor total arrecadado pelo pacote (valor_por_pessoa * total_participantes).
-
-
-10) Escreva uma função para exibir todos os registros da tabela de vendas: 
-    10.1) As seguintes informações devem ser exibidas: código, nome do cliente, descrição do pacote, quantidade_pessoas e valor_total da venda.
-    10.2): Ao final, a função deverá exibir o valor total vendido.
 
 
 > Todas as funções descritas acima deverão ser chamadas através de um menu de opções que será chamado a partir da função main().
@@ -70,5 +50,22 @@ Estruturas: ✅
 
 6) Escreva uma função para permitir a inclusão de novos registros na tabela de Pacotes: ✅
     6.1): Quando o usuário digitar o código do guia, o programa deverá buscar este código na tabela de Guias e exibir o nome do guia, o nome da cidade e o nome do país. ✅
+
+7) Escreva uma função para permitir a inclusão de novos registros na tabela de Vendas: ✅
+    7.1): Quando o usuário digitar o código_cliente, o programa deverá buscar este código na tabela de Clientes e exibir seu nome e o nome da sua cidade. ✅
+    7.2): Quando o usuário digitar o código_pacote, o programa deverá buscar este código na tabela de Pacotes e exibir a descrição, o nome do guia e o valor por pessoa. ✅
+    7.3): Quando o usuário digitar quantidade_pessoas, o programa deverá adicionar esta informação ao total_participantes da tabela de Pacotes. ✅
+        7.3.1): O programa não deverá permitir que o total_participantes seja maior do que quant_max_participantes. ✅
+    7.4): O programa deverá calcular e exibir o valor total a ser pago pelo cliente e gravar essa informação em valor_total na tabela Vendas. ✅
+
+8) Escreva uma função para permitir ao usuário consultar os dados de determinado pacote: ✅
+    8.1) Para cada pacote consultado, exibir: todos os seus dados e o valor total arrecadado pelo pacote (valor_por_pessoa * total_participantes). ✅
+
+9) Escreva uma função para exibir todos os registros da tabela Pacotes que tenham sido completamente vendidos (total_participantes = quant_max_participantes): ✅
+
+10) Escreva uma função para exibir todos os registros da tabela de vendas: ✅
+    10.1) As seguintes informações devem ser exibidas: código, nome do cliente, descrição do pacote, quantidade_pessoas e valor_total da venda. ✅
+    10.2): Ao final, a função deverá exibir o valor total vendido. ✅
+    9.1) As seguintes informações devem ser exibidas: código, descrição, nome do guia, valor total arrecadado pelo pacote (valor_por_pessoa * total_participantes). ✅
 
 11) Escreva uma função para reorganização da tabela de Clientes:  {VERIFICAR SE DE FATO ESTÁ SENDO REORGANIZADO} ⚠️ 
